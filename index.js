@@ -1,14 +1,23 @@
 const request = require('request');
-const path = require('path');
 const config = require('./config');
-const analyze = require('./analyze');
+const fs = require('fs');
+const cheerio = require('cheerio');
 
+let imgList = []
 function start() {
     request(config.url, function (err, res, body) {
-        console.info('******----start---******');
         if(!err && res) {
-            console.info('******----really start---******');
-            analyze.findImg(body, downLoad);
+            let $ = cheerio.load(body);
+            JSON.parse($('script[id="initData"]').html()).list.forEach(function(item){
+                imgList.push(item.img)
+            });
+            console.log(imgList);
+            for (let i = 0; i < imgList.length; i++) {
+                let obj = imgList[i];
+                setTimeout(function(){
+                    downLoad(obj, './img/'+ (new Date()).getTime() +'.jpg');
+                },400);
+            }
         }
         if(err) {
             console.info('******----err---******',err)
@@ -16,14 +25,10 @@ function start() {
     })
 }
 
-function downLoad(imgUrl, i) {
-    let ext = imgUrl.split('.').pop();
-    console.info('******----imgUrl---******',imgUrl)
-    console.info('******----ext---******',ext)
-    // request(imgUrl).pipe(fs.createReadStream(path.join(config.imgDir, i + '.' + ext), {
-    //     'encoding': 'utf8'
-    // }))
-    console.info('******----i---******',i)
+function downLoad(src, dest) {
+    request(src).pipe(fs.createWriteStream(dest)).on('close',function(){
+        console.log('pic saved!')
+    })
 }
 
 start();

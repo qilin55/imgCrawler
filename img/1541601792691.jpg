@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Error>
+  <Code>AccessDenied</Code>
+  <Message>Request has expired.</Message>
+  <RequestId>5BE2FA023243A9B6B00DE456</RequestId>
+  <HostId>bj-yuantu.oss-cn-beijing.aliyuncs.com</HostId>
+  <Expires>2018-09-27T16:00:00.000Z</Expires>
+  <ServerTime>2018-11-07T14:43:14.000Z</ServerTime>
+</Error>

@@ -5,7 +5,9 @@ function findImg(dom, callback) {
     $('img').each(function (i, elem) {
         let imgSrc = $(this).attr('src').replace('//', '');
         if(imgSrc.indexOf('.com') != -1) {
-        console.info('******----imgSrc---******',imgSrc)
+            if(imgSrc.indexOf('http') == -1) {
+                imgSrc = 'http://' + imgSrc
+            }
             callback(imgSrc, i);
         }
     })
